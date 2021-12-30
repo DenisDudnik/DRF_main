@@ -1,24 +1,24 @@
 import React from 'react'
 
 
-const AuthorItem = ({ author }) => {
+const UserItem = ({ user }) => {
     return (
         <tr>
             <td>
-                {author.first_name}
+                {user.first_name}
             </td>
             <td>
-                {author.last_name}
+                {user.last_name}
             </td>
             <td>
-                {author.birthday_year}
+                {user.birthday_year}
             </td>
         </tr>
     )
 }
 
 
-const AuthorList = ({ authors }) => {
+const UserList = ({ users }) => {
     return (
         <table>
             <th>
@@ -30,10 +30,10 @@ const AuthorList = ({ authors }) => {
             <th>
                 Birthday year
             </th>
-            {authors.map((author) => <AuthorItem author={author} />)}
+            {users.map((user) => <UserItem user={user} />)}
         </table>
     )
 }
 
 
-export default AuthorList
+export default UserList

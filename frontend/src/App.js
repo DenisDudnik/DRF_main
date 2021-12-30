@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import './style.css'
-import AuthorList from './components/Author.js'
+import UserList from './components/Users.js'
 import MenuList from './components/Menu.js'
 import FooterContent from './components/Footer.js'
 
@@ -11,14 +11,14 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            'authors': [],
+            'users': [],
             'menuItems': [],
             'footerContent': [],
         }
     }
 
     componentDidMount() {
-        const authors = [
+        const users = [
             {
                 'first_name': 'Фёдор',
                 'last_name': 'Достоевский',
@@ -51,7 +51,7 @@ class App extends React.Component {
 
         this.setState(
             {
-                'authors': authors,
+                'users': users,
                 'menuItems': menuItems,
                 'footerContent': footerContent,
             }
@@ -70,7 +70,7 @@ class App extends React.Component {
                         </div>
                         <div class="right_block">
                             <div class="content">
-                                <AuthorList authors={this.state.authors} />
+                                <UserList users={this.state.users} />
                             </div>
                         </div>
                     </div>
