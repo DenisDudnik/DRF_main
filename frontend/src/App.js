@@ -14,7 +14,7 @@ class App extends React.Component {
         this.state = {
             'users': [],
             'menuItems': [],
-            'footerContent': [],
+            'footerContent': {},
         }
     }
 
@@ -44,12 +44,12 @@ class App extends React.Component {
             },
         ]
 
-        const footerContent = [
-            {
-                'owner': 'Denis.Dudnik@gmail.com',
-                'year': (new Date()).getFullYear()
-            },
-        ]
+        const footerContent =
+        {
+            'owner': 'Denis.Dudnik@gmail.com',
+            'year': (new Date()).getFullYear()
+        }
+
 
         axios.get('http://127.0.0.1:8000/api/users')
             .then(response => {
