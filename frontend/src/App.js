@@ -4,6 +4,7 @@ import './App.css';
 import './style.css'
 import AuthorList from './components/Author.js'
 import MenuList from './components/Menu.js'
+import FooterContent from './components/Footer.js'
 
 class App extends React.Component {
 
@@ -11,7 +12,8 @@ class App extends React.Component {
         super(props)
         this.state = {
             'authors': [],
-            'menuItems': []
+            'menuItems': [],
+            'footerContent': [],
         }
     }
 
@@ -40,10 +42,18 @@ class App extends React.Component {
             },
         ]
 
+        const footerContent = [
+            {
+                'owner': 'Denis.Dudnik@gmail.com',
+                'year': (new Date()).getFullYear()
+            },
+        ]
+
         this.setState(
             {
                 'authors': authors,
-                'menuItems': menuItems
+                'menuItems': menuItems,
+                'footerContent': footerContent,
             }
         )
     }
@@ -67,7 +77,7 @@ class App extends React.Component {
                 </div>
 
                 <div class="footer">
-                    Copyright &copy;
+                    <FooterContent footerContent={this.state.footerContent} />
                 </div>
             </div>
         )
