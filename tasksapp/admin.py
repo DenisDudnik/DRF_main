@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Project, TODO
+
+from .models import TODO, Project
 
 # Register your models here.
 

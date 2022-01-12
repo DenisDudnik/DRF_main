@@ -1,7 +1,9 @@
 # from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from .models import Project, TODO
+
+from .models import TODO, Project
 from .serializers import ProjectModelSerializer, TODOModelSerializer
+
 
 # Create your views here.
 class ProjectModelViewSet(ModelViewSet):
