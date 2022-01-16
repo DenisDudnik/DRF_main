@@ -8,6 +8,9 @@ from usersapp.models import User
 
 
 class Project(models.Model):
+    class Meta:
+        ordering = ["name"]
+
     uuid = models.UUIDField(primary_key=True, default=uuid4)
     name = models.CharField(max_length=128, unique=True)
     repo_link = models.URLField(blank=True, null=True)
@@ -18,6 +21,9 @@ class Project(models.Model):
 
 
 class TODO(models.Model):
+    class Meta:
+        ordering = ["-date_updated"]
+
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     task_text = models.TextField()
