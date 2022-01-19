@@ -4,6 +4,8 @@ import logo from './logo.svg';
 import './App.css';
 import './style.css'
 import UserList from './components/Users.js'
+import ProjectList from './components/Projects.js'
+import TODOList from './components/TODOs.js'
 import MenuList from './components/Menu.js'
 import FooterContent from './components/Footer.js'
 
@@ -13,8 +15,8 @@ class App extends React.Component {
         super(props)
         this.state = {
             'users': [],
-            'prjects': [],
-            'todo': [],
+            'projects': [],
+            'todos': [],
             'menuItems': [],
             'footerContent': {},
         }
@@ -71,7 +73,7 @@ class App extends React.Component {
 
         axios.get('http://127.0.0.1:8000/api/projects/')
             .then(response => {
-                const projects = response.data
+                const projects = response.data.results
                 this.setState(
                     {
                         'projects': projects,
@@ -81,10 +83,10 @@ class App extends React.Component {
 
         axios.get('http://127.0.0.1:8000/api/TODO/')
             .then(response => {
-                const todos = response.data
+                const todos = response.data.results
                 this.setState(
                     {
-                        'todo': todos,
+                        'todos': todos,
                     }
                 )
             }).catch(error => console.log(error))
@@ -103,6 +105,10 @@ class App extends React.Component {
                         <div class="right_block">
                             <div class="content">
                                 <UserList users={this.state.users} />
+
+                                <ProjectList projects={this.state.projects} />
+
+                                <TODOList todos={this.state.todos} />
                             </div>
                         </div>
                     </div>
