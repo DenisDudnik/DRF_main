@@ -8,6 +8,17 @@ import ProjectList from './components/Projects.js'
 import TODOList from './components/TODOs.js'
 import MenuList from './components/Menu.js'
 import FooterContent from './components/Footer.js'
+import { BrowserRouter, Route, Link, Routes, Navigate } from 'react-router-dom'
+
+
+const NotFound404 = ({ location }) => {
+    return (
+        <div>
+            <h1>Страница не найдена</h1>
+        </div>
+    )
+}
+
 
 class App extends React.Component {
 
@@ -44,11 +55,11 @@ class App extends React.Component {
             },
             {
                 'title': 'Проекты',
-                'link': '/projects/'
+                'link': '/projects'
             },
             {
                 'title': 'ToDo',
-                'link': '/TODO/'
+                'link': '/TODO'
             },
         ]
 
@@ -97,20 +108,27 @@ class App extends React.Component {
             <div class="wrapper">
                 <div class="top">
                     <div class="main_blocks_container">
-                        <div class="left_block">
-                            <div class="menu">
-                                <MenuList menuItems={this.state.menuItems} />
-                            </div>
-                        </div>
-                        <div class="right_block">
-                            <div class="content">
-                                <UserList users={this.state.users} />
+                        <BrowserRouter>
+                            <div class="left_block">
+                                <div class="menu">
+                                    <MenuList menuItems={this.state.menuItems} />
 
-                                <ProjectList projects={this.state.projects} />
-
-                                <TODOList todos={this.state.todos} />
+                                </div>
                             </div>
-                        </div>
+                            <div class="right_block">
+                                <div class="content">
+
+                                    <Routes>
+                                        <Route exact path='/' element={<UserList users={this.state.users} />} />
+                                        <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
+                                        <Route exact path='/TODO' element={<TODOList todos={this.state.todos} />} />
+                                        <Route path="/users" element={<Navigate replace to="/" />} />
+                                        <Route path='*' element={<NotFound404 />} />
+                                    </Routes>
+
+                                </div>
+                            </div>
+                        </BrowserRouter>
                     </div>
                 </div>
 
