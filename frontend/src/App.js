@@ -13,6 +13,8 @@ class App extends React.Component {
         super(props)
         this.state = {
             'users': [],
+            'prjects': [],
+            'todo': [],
             'menuItems': [],
             'footerContent': {},
         }
@@ -35,12 +37,16 @@ class App extends React.Component {
 
         const menuItems = [
             {
-                'title': 'Главная',
+                'title': 'Пользователи',
                 'link': '/'
             },
             {
-                'title': 'Настройки',
-                'link': '/settings'
+                'title': 'Проекты',
+                'link': '/projects/'
+            },
+            {
+                'title': 'ToDo',
+                'link': '/TODO/'
             },
         ]
 
@@ -51,9 +57,9 @@ class App extends React.Component {
         }
 
 
-        axios.get('http://127.0.0.1:8000/api/users')
+        axios.get('http://127.0.0.1:8000/api/users/')
             .then(response => {
-                const users = response.data
+                const users = response.data.results
                 this.setState(
                     {
                         'users': users,
@@ -63,6 +69,25 @@ class App extends React.Component {
                 )
             }).catch(error => console.log(error))
 
+        axios.get('http://127.0.0.1:8000/api/projects/')
+            .then(response => {
+                const projects = response.data
+                this.setState(
+                    {
+                        'projects': projects,
+                    }
+                )
+            }).catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:8000/api/TODO/')
+            .then(response => {
+                const todos = response.data
+                this.setState(
+                    {
+                        'todo': todos,
+                    }
+                )
+            }).catch(error => console.log(error))
     }
 
     render() {
