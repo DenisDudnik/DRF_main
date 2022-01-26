@@ -36,20 +36,7 @@ class App extends React.Component {
         }
     }
 
-    componentDidMount() {
-
-        // const users = [
-        //     {
-        //         'first_name': 'Фёдор',
-        //         'last_name': 'Достоевский',
-        //         'birthday_year': 1821
-        //     },
-        //     {
-        //         'first_name': 'Александр',
-        //         'last_name': 'Грин',
-        //         'birthday_year': 1880
-        //     },
-        // ]
+    load_data() {
 
         const menuItems = [
             {
@@ -72,6 +59,12 @@ class App extends React.Component {
             'year': (new Date()).getFullYear()
         }
 
+        this.setState(
+            {
+                'menuItems': menuItems,
+                'footerContent': footerContent,
+            }
+        )
 
         axios.get('http://127.0.0.1:8000/api/users/')
             .then(response => {
@@ -79,8 +72,6 @@ class App extends React.Component {
                 this.setState(
                     {
                         'users': users,
-                        'menuItems': menuItems,
-                        'footerContent': footerContent,
                     }
                 )
             }).catch(error => console.log(error))
@@ -134,6 +125,11 @@ class App extends React.Component {
             .then(response => {
                 this.set_token(response.data['token'])
             }).catch(error => alert('Неверный логин или пароль'))
+    }
+
+    componentDidMount() {
+        this.get_token_from_storage()
+        this.load_data()
     }
 
     render() {
