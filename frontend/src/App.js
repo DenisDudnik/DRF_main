@@ -8,6 +8,7 @@ import ProjectList from './components/Projects.js'
 import TODOList from './components/TODOs.js'
 import MenuList from './components/Menu.js'
 import FooterContent from './components/Footer.js'
+import LoginForm from './components/Auth.js'
 import { BrowserRouter, Route, Link, Routes, Navigate } from 'react-router-dom'
 
 
@@ -60,6 +61,10 @@ class App extends React.Component {
             {
                 'title': 'ToDo',
                 'link': '/TODO'
+            },
+            {
+                'title': 'Login',
+                'link': '/login'
             },
         ]
 
@@ -122,6 +127,7 @@ class App extends React.Component {
                                         <Route exact path='/' element={<UserList users={this.state.users} />} />
                                         <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
                                         <Route exact path='/TODO' element={<TODOList todos={this.state.todos} />} />
+                                        <Route exact path='/login' element={<LoginForm />} />
                                         <Route path="/users" element={<Navigate replace to="/" />} />
                                         <Route path='*' element={<NotFound404 />} />
                                     </Routes>
