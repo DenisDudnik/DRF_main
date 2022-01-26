@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 import logo from './logo.svg';
 import './App.css';
 import './style.css'
@@ -31,6 +32,7 @@ class App extends React.Component {
             'todos': [],
             'menuItems': [],
             'footerContent': {},
+            'token': '',
         }
     }
 
@@ -61,10 +63,6 @@ class App extends React.Component {
             {
                 'title': 'ToDo',
                 'link': '/TODO'
-            },
-            {
-                'title': 'Login',
-                'link': '/login'
             },
         ]
 
@@ -108,13 +106,33 @@ class App extends React.Component {
             }).catch(error => console.log(error))
     }
 
+    set_token(token) {
+        const cookies = new Cookies()
+        cookies.set('token', token)
+        this.setState({ 'token': token })
+    }
+
+    is_authenticated() {
+        return this.state.token != ''
+    }
+
+    logout() {
+        this.set_token('')
+    }
+
+    get_token_from_storage() {
+        const cookies = new Cookies()
+        const token = cookies.get('token')
+        this.setState({ 'token': token })
+    }
+
     get_token(username, password) {
         axios.post('http://127.0.0.1:8000/api-token-auth/', {
             username: username,
             password: password
         })
             .then(response => {
-                console.log(response.data)
+                this.set_token(response.data['token'])
             }).catch(error => alert('Неверный логин или пароль'))
     }
 
@@ -125,6 +143,10 @@ class App extends React.Component {
                     <div class="main_blocks_container">
                         <BrowserRouter>
                             <div class="left_block">
+                                <div class="menu_login_link">
+                                    {this.is_authenticated() ? <button
+                                        onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
+                                </div>
                                 <div class="menu">
                                     <MenuList menuItems={this.state.menuItems} />
 
