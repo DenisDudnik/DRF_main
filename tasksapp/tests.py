@@ -10,11 +10,13 @@ from rest_framework.test import (
 )
 
 # from mixer.backend.django import mixer  # библиотека для генерации тестовых данных
-from django.contrib.auth.models import User  # модель пользователя
+# from django.contrib.auth.models import User  # модель пользователя
+from django.contrib.auth import get_user_model
 from .views import ProjectModelViewSet, TODOModelViewSet
 from .models import TODO, Project
 
 # Create your tests here.
+User = get_user_model()
 
 
 class TestProjectModelViewSet(TestCase):
@@ -39,6 +41,24 @@ class TestProjectModelViewSet(TestCase):
         view = ProjectModelViewSet.as_view({"post": "create"})
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_project_with_auth(self):
+        factory = APIRequestFactory()
+
+        admin = User.objects.create_superuser("admin", "admin@local.host", "password")
+        admin_uuid = admin.uuid
+
+        data = {
+            "name": "Project Test",
+            "repo_link": "http://localhost",
+            "users": [admin_uuid],
+        }
+        request = factory.post("/api/projects/", data=data, format="json")
+
+        force_authenticate(request, admin)
+        view = ProjectModelViewSet.as_view({"post": "create"})
+        response = view(request)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     """
     Example about view = TODOModelViewSet.as_view({"get": "list"})
