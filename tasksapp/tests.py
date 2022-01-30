@@ -32,6 +32,14 @@ class TestProjectModelViewSet(TestCase):
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def test_create_project(self):
+        factory = APIRequestFactory()
+        data = {"name": "Project Test", "repo_link": "http://localhost", "users": []}
+        request = factory.post("/api/projects/", data=data, format="json")
+        view = ProjectModelViewSet.as_view({"post": "create"})
+        response = view(request)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
     """
     Example about view = TODOModelViewSet.as_view({"get": "list"})
 
