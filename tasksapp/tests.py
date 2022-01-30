@@ -86,3 +86,41 @@ class TestProjectModelViewSet(TestCase):
     def destroy(self, request, pk=None):
         pass
     """
+
+
+class TestTODOViewSet(APITestCase):
+    def test_get_TODO_list(self):
+        response = self.client.get("/api/TODO/")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        admin = User.objects.create_superuser("admin", "admin@local.host", "password")
+        self.client.login(username="admin", password="password")
+        response = self.client.get("/api/TODO/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_edit_TODO(self):
+        user = User.objects.create(
+            email="user@local.host", username="user", password="password"
+        )
+
+        project = Project.objects.create(
+            name="Project Test", repo_link="http://localhost"
+        )
+        project.users.add(user)
+
+        todo = TODO.objects.create(
+            project=project, created_by=user, task_text="test text"
+        )
+
+        admin = User.objects.create_superuser("admin", "admin@local.host", "password")
+        self.client.login(username="admin", password="password")
+
+        response = self.client.put(
+            f"/api/TODO/{todo.uuid}/",
+            {"project": project.uuid, "created_by": user.uuid, "task_text": "NEW TEXT"},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        todo = TODO.objects.get(uuid=todo.uuid)
+        self.assertEqual(todo.task_text, "NEW TEXT")
