@@ -9,7 +9,8 @@ from rest_framework.test import (
     APITestCase,  # класс для создания test cases для REST API
 )
 
-# from mixer.backend.django import mixer  # библиотека для генерации тестовых данных
+from mixer.backend.django import mixer  # библиотека для генерации тестовых данных
+
 # from django.contrib.auth.models import User  # модель пользователя
 from django.contrib.auth import get_user_model
 from .views import ProjectModelViewSet, TODOModelViewSet
@@ -124,3 +125,28 @@ class TestTODOViewSet(APITestCase):
 
         todo = TODO.objects.get(uuid=todo.uuid)
         self.assertEqual(todo.task_text, "NEW TEXT")
+
+        self.client.logout
+
+    def test_edit_TODO_mixer(self):
+
+        todo = mixer.blend(TODO)
+
+        admin = User.objects.create_superuser("admin", "admin@local.host", "password")
+        self.client.login(username="admin", password="password")
+
+        response = self.client.put(
+            f"/api/TODO/{todo.uuid}/",
+            {
+                "project": todo.project.uuid,
+                "created_by": todo.created_by.uuid,
+                "task_text": "NEW TEXT",
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        todo = TODO.objects.get(uuid=todo.uuid)
+        self.assertEqual(todo.task_text, "NEW TEXT")
+
+        self.client.logout
