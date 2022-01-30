@@ -31,3 +31,30 @@ class TestProjectModelViewSet(TestCase):
         view = TODOModelViewSet.as_view({"get": "list"})
         response = view(request)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    """
+    Example about view = TODOModelViewSet.as_view({"get": "list"})
+
+    user_list = UserViewSet.as_view({'get': 'list'})
+    user_detail = UserViewSet.as_view({'get': 'retrieve'})
+
+    class UserViewSet(viewsets.ViewSet):
+
+    def list(self, request):
+        pass
+
+    def create(self, request):
+        pass
+
+    def retrieve(self, request, pk=None):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+    """
