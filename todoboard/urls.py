@@ -32,4 +32,5 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("api-token-auth/", views.obtain_auth_token),
     path("api/", include(router.urls)),
+    path("api/v<int:version>/users/", UserCustomViewSet.as_view({"get": "list"})),
 ]
