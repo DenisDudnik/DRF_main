@@ -68,7 +68,7 @@ class App extends React.Component {
 
         const headers = this.get_headers()
 
-        axios.get('http://127.0.0.1:8000/api/users/', { headers })
+        axios.get('http://127.0.0.1:8000/api/v0.1/users/', { headers })
             .then(response => {
                 const users = response.data.results
                 this.setState(
@@ -81,7 +81,7 @@ class App extends React.Component {
                 this.setState({ users: [] })
             })
 
-        axios.get('http://127.0.0.1:8000/api/projects/', { headers })
+        axios.get('http://127.0.0.1:8000/api/v0.1/projects/', { headers })
             .then(response => {
                 const projects = response.data.results
                 this.setState(
@@ -94,7 +94,7 @@ class App extends React.Component {
                 this.setState({ projects: [] })
             })
 
-        axios.get('http://127.0.0.1:8000/api/TODO/', { headers })
+        axios.get('http://127.0.0.1:8000/api/v0.1/TODO/', { headers })
             .then(response => {
                 const todos = response.data.results
                 this.setState(
@@ -105,6 +105,21 @@ class App extends React.Component {
             }).catch(error => {
                 console.log(error)
                 this.setState({ todos: [] })
+            })
+    }
+
+    deleteProject(id) {
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/api/v0.1/projects/${id}`, { headers })
+            .then(response => {
+                const projects = this.state.projects.filter((item) => item.id !== id)
+                this.setState(
+                    {
+                        'projects': projects,
+                    }
+                )
+            }).catch(error => {
+                console.log(error)
             })
     }
 
@@ -173,7 +188,7 @@ class App extends React.Component {
 
                                     <Routes>
                                         <Route exact path='/' element={<UserList users={this.state.users} />} />
-                                        <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
+                                        <Route exact path='/projects' element={<ProjectList projects={this.state.projects} deleteProject={(id) => this.deleteProject(id)} />} />
                                         <Route exact path='/TODO' element={<TODOList todos={this.state.todos} />} />
                                         <Route exact path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
                                         <Route path="/users" element={<Navigate replace to="/" />} />
