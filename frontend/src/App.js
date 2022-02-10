@@ -6,6 +6,7 @@ import './App.css';
 import './style.css'
 import UserList from './components/Users.js'
 import ProjectList from './components/Projects.js'
+import ProjectForm from './components/ProjectForm.js'
 import TODOList from './components/TODOs.js'
 import MenuList from './components/Menu.js'
 import FooterContent from './components/Footer.js'
@@ -123,6 +124,28 @@ class App extends React.Component {
             })
     }
 
+    createProject(name, repo_link, users) {
+        const headers = this.get_headers()
+        // const user_lst = [users]
+        console.log(users)
+
+        const data = { name, repo_link, users }
+        console.log(data)
+        axios.post(`http://127.0.0.1:8000/api/v0.1/projects/`, data, { headers })
+            .then(response => {
+                let new_project = response.data
+                const user = this.state.users.filter((item) => item.id === new_project.user)[0]
+                new_project.user = user
+                this.setState(
+                    {
+                        projects: [...this.state.projects, new_project],
+                    }
+                )
+            }).catch(error => {
+                console.log(error)
+            })
+    }
+
     set_token(token) {
         const cookies = new Cookies()
         cookies.set('token', token)
@@ -188,6 +211,7 @@ class App extends React.Component {
 
                                     <Routes>
                                         <Route exact path='/' element={<UserList users={this.state.users} />} />
+                                        <Route exact path='/projects/create' element={<ProjectForm createProject={(name, repo_link, users) => this.createProject(name, repo_link, users)} />} />
                                         <Route exact path='/projects' element={<ProjectList projects={this.state.projects} deleteProject={(id) => this.deleteProject(id)} />} />
                                         <Route exact path='/TODO' element={<TODOList todos={this.state.todos} />} />
                                         <Route exact path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
