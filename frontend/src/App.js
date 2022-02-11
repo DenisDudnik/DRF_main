@@ -126,11 +126,11 @@ class App extends React.Component {
 
     createProject(name, repo_link, users) {
         const headers = this.get_headers()
-        // const user_lst = [users]
-        console.log(users)
+
+        // console.log(users)
 
         const data = { name, repo_link, users }
-        console.log(data)
+        // console.log(data)
         axios.post(`http://127.0.0.1:8000/api/v0.1/projects/`, data, { headers })
             .then(response => {
                 let new_project = response.data
@@ -211,7 +211,7 @@ class App extends React.Component {
 
                                     <Routes>
                                         <Route exact path='/' element={<UserList users={this.state.users} />} />
-                                        <Route exact path='/projects/create' element={<ProjectForm createProject={(name, repo_link, users) => this.createProject(name, repo_link, users)} />} />
+                                        <Route exact path='/projects/create' element={<ProjectForm users={this.state.users} createProject={(name, repo_link, users) => this.createProject(name, repo_link, users)} />} />
                                         <Route exact path='/projects' element={<ProjectList projects={this.state.projects} deleteProject={(id) => this.deleteProject(id)} />} />
                                         <Route exact path='/TODO' element={<TODOList todos={this.state.todos} />} />
                                         <Route exact path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />

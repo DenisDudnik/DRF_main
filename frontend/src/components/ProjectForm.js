@@ -4,7 +4,7 @@ import React from 'react'
 class ProjectForm extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { name: '', repo_links: '', users: [] }
+        this.state = { name: '', repo_links: '', users: props.users[0]?.uuid }
     }
 
     handleChange(event) {
@@ -39,9 +39,11 @@ class ProjectForm extends React.Component {
 
                 <div className="form-group">
                     <label for="users">users</label>
-                    <input type="text" className="form-control" name="users"
-                        value={this.state.users}
-                        onChange={(event) => this.handleChange(event)} />
+                    <select className="form-control" name="users"
+                        onChange={(event) => this.handleChange(event)} >
+                        {this.props.users.map((user) => <option
+                            value={user.uuid}>{user.username}</option>)}
+                    </select>
                 </div>
 
                 <input type="submit" className="btn btn-primary" value="Save" />
