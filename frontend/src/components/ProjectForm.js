@@ -5,6 +5,7 @@ class ProjectForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = { name: '', repo_links: '', users: props.users[0]?.uuid }
+        console.log(props)
     }
 
     handleChange(event) {
