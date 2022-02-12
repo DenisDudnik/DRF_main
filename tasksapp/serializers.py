@@ -1,11 +1,13 @@
-from rest_framework.serializers import ModelSerializer, StringRelatedField
+from rest_framework.serializers import (
+    ModelSerializer,
+    StringRelatedField,
+    HyperlinkedRelatedField,
+)
 
 from .models import TODO, Project
 
 
 class ProjectModelSerializer(ModelSerializer):
-    # users = StringRelatedField(many=True)
-
     class Meta:
         model = Project
         fields = "__all__"
